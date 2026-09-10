@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHDL Markt-Positionierungs-Tool Pro</title>
+    
+    <!-- MODUL 2: CSS THEME CORE -->
+    <style>
+        
+:root {
+    --primary: #d4af37; /* Echtes Löwen-Gold */
+    --primary-glow: rgba(214, 175, 55, 0.25);
+    --dark: #0a0a0a; /* Tiefes Mitternachtsschwarz */
+    --bg-card: rgba(22, 22, 22, 0.75); /* Glas-Effekt Hintergrund */
+    --border: rgba(255, 255, 255, 0.08); /* Extrem feine Trennlinien */
+    --text-main: #f5f5f7; /* Edles Off-White (Apple Style) */
+    --axis-y-color: #3498db;
+    --axis-x-color: #e67e22;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--dark);
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(214, 175, 55, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(52, 152, 219, 0.03) 0%, transparent 40%);
+    color: var(--text-main);
+    margin: 0;
+    padding: 30px 20px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1350px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 35px;
+}
+
+@media (max-width: 1100px) {
+    .container { grid-template-columns: 1fr; }
+}
+
+/* PREMIUM HEADER WITH GLASSMORPHISM */
+header {
+    grid-column: 1 / -1;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.8), rgba(5, 5, 5, 0.9));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 35px 25px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    border-bottom: 2px solid var(--primary);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+.brand-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    background: rgba(214, 175, 55, 0.1);
+    color: var(--primary);
+    padding: 6px 16px;
+    border-radius: 30px;
+    border: 1px solid rgba(214, 175, 55, 0.25);
+    margin-bottom: 16px;
+    box-shadow: 0 0 15px rgba(214, 175, 55, 0.05);
+}
+
+header h1 {
+    margin: 0;
+    font-family: 'Playfair Display', 'Didot', 'Georgia', serif;
+    font-size: 36px;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 2px;
+}
+
+header h1 span {
+    font-weight: 800;
+    color: var(--primary);
+    font-style: normal;
+    text-shadow: 0 0 20px var(--primary-glow);
+}
+
+header p {
+    margin: 10px 0 0 0;
+    font-size: 12px;
+    font-style: italic;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #8e8e93;
+}
+
+/* DASHBOARD PANELS */
+.panel {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+.panel h2 {
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 12px;
+    color: #fff;
+}
+
+/* CARDS & QUESTION SECTIONS */
+.question-section {
+    margin-bottom: 25px;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-left: 4px solid #444;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.question-section:hover {
+    border-color: rgba(255,255,255,0.1);
+}
+.question-section.axis-y { border-left-color: var(--axis-y-color); }
+.question-section.axis-x { border-left-color: var(--axis-x-color); }
+
+.question-title { 
+    font-size: 15px; 
+    font-weight: 500; 
+    margin-bottom: 14px; 
+    color: #e5e5ea;
+}
+
+.options-flex { display: flex; flex-direction: column; gap: 10px; }
+
+/* HIGH-END BUTTON ARCHITECTURE */
+.option-btn {
+    background: rgba(255, 255, 255, 0.03);
+    color: #d1d1d6;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 14px 18px;
+    text-align: left;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.option-btn:hover { 
+    background: rgba(255, 255, 255, 0.08); 
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(4px);
+}
+
+.option-btn.selected {
+    background: linear-gradient(135deg, #2c2c2e, #1c1c1e);
+    color: #fff;
+    font-weight: 600;
+    border-color: rgba(255,255,255,0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* THE COORDINATE MATRIX SYSTEM */
+.matrix-wrapper { 
+    position: relative; 
+    margin: 15px auto; 
+    width: 470px;
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    gap: 20px; 
+}
+
+.matrix-title-y { 
+    writing-mode: vertical-lr; 
+    transform: rotate(180deg); 
+    font-weight: 600; 
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--axis-y-color);
+    text-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+}
+
+.matrix-title-x { 
+    text-align: center; 
+    font-weight: 600; 
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 20px;
+    color: var(--axis-x-color);
+    text-shadow: 0 0 10px rgba(230, 126, 34, 0.2);
+}
+
+.matrix-grid {
+    position: relative; 
+    width: 400px;
+    height: 400px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    background: radial-gradient(circle at center, #1c1c1e 0%, #111112 100%);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+    overflow: hidden;
+}
+.matrix-grid::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: 1px dashed rgba(255,255,255,0.15); }
+.matrix-grid::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; border-left: 1px dashed rgba(255,255,255,0.15); }
+
+.quad-label { 
+    position: absolute; 
+    font-size: 9px; 
+    color: rgba(255, 255, 255, 0.18); 
+    font-weight: 700; 
+    text-transform: uppercase; 
+    letter-spacing: 1.5px;
+    width: 40%; 
+    text-align: center; 
+    pointer-events: none; 
+}
+.ql-tl { top: 20px; left: 20px; }
+.ql-tr { top: 20px; right: 20px; }
+.ql-bl { bottom: 20px; left: 20px; }
+.ql-br { bottom: 20px; right: 20px; }
+
+/* THE GOLDEN GLOW TARGET DOT */
+.target-dot {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, #ffe082, var(--primary));
+    border: 2px solid #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1), top 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    left: 50%; top: 50%;
+    z-index: 10;
+    box-shadow: 0 0 25px var(--primary), 0 0 50px var(--primary-glow);
+}
+
+/* RESULTS & COGNITIVE OUTPUT CARDS */
+.result-card { 
+    background: rgba(255, 255, 255, 0.01); 
+    border: 1px solid rgba(255, 255, 255, 0.05); 
+    border-left: 5px solid var(--primary); 
+    padding: 20px; 
+    border-radius: 12px; 
+    margin-top: 20px; 
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+.result-card h3 { margin-top: 0; font-size: 16px; font-weight: 500; color: #fff; }
+
+
+.stat-highlight { 
+    font-size: 26px; 
+    font-weight: 700; 
+    color: var(--primary); 
+    margin: 8px 0; 
+    text-shadow: 0 0 15px var(--primary-glow);
+}
+
+.pitch-box { 
+    background: rgba(255, 255, 255, 0.4); 
+    color: #e5e5ea; 
+    padding: 16px; 
+    border-radius: 10px; 
+    font-style: italic; 
+    margin-top: 10px; 
+    font-size: 14.5px;
+    line-height: 1.6;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+footer {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 25px;
+    font-size: 11px;
+    color: #636366;
+    letter-spacing: 1.5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    margin-top: 30px;
+    text-transform: uppercase;
+}
+footer strong { color: var(--primary); font-weight: 600; }
+
+/* DESIGN-UPGRADE FÜR DEN PDF-DRUCK */
+@media print {
+    /* Alle interaktiven Elemente und Fragen auf dem PDF unsichtbar machen */
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0;
+    }
+    
+    .container {
+        display: block !important; /* Grid auflösen für den Druck */
+        border-left: none !important;
+        padding-left: 0 !important;
+    }
+    
+    /* Linkes Panel mit den Fragen komplett ausblenden */
+    .panel:nth-of-type(1) {
+        display: none !important;
+    }
+    
+    /* Rechtes Panel (Auswertung) für den Druck optimieren */
+    .panel.visual-column {
+        background: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    
+    header {
+        background: #151515 !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .matrix-grid {
+        background: #f8f9fa !important;
+        border: 2px solid #000 !important;
+        box-shadow: none !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .matrix-grid::before, .matrix-grid::after {
+        border-color: #777 !important;
+    }
+    
+    .target-dot {
+        box-shadow: none !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .result-card {
+        background: #fafafa !important;
+        border: 1px solid #ccc !important;
+        border-left: 5px solid #d4af37 !important;
+        color: #000 !important;
+        page-break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .pitch-box {
+        background: #f0f0f2 !important;
+        color: #111 !important;
+        border: 1px solid #ddd !important;
+    }
+    
+    #exportBtn, footer {
+        display: none !important; /* Button auf dem PDF verbergen */
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<body>
+
+<div class="container">
+    
+    <!-- BRANDING & LOGO HEADER -->
+    <header>
+        <div class="brand-badge">An Application by InteractClub</div>
+        <h1>Die Höhle der Löwen &mdash; Markt-Mapper <span>PRO</span></h1>
+        <p>Marktpotenzial &bull; Zielgruppen-Matrix &bull; Echtzeit-Analyse</p>
+    </header>
+
+    <!-- LINKE SPALTE: DER EINE, EINZIGE FRAGEBOGEN-PANEL -->
+    <div class="panel">
+        <h2>1. Zielgruppen-Qualifizierung</h2>
+        
+        <!-- Frage 1 -->
+        <div class="question-section axis-y">
+            <div class="question-title">Frage 1: Wie hoch ist der angepeilte Verkaufspreis pro Einheit?</div>
+            <div class="options-flex">
+                <button class="option-btn selected" data-axis="y" data-idx="0" data-weight="10">Unter 10 € (Massen-Verbrauchsgut)</button>
+                <button class="option-btn" data-axis="y" data-idx="0" data-weight="45">10 € bis 50 € (Standard-Konsumprodukt)</button>
+                <button class="option-btn" data-axis="y" data-idx="0" data-weight="90">Über 50 € (Premium- / Investitionsgut)</button>
+            </div>
+        </div>
+
+        <!-- Frage 2 -->
+        <div class="question-section axis-y">
+            <div class="question-title">Frage 2: Welches Haushaltsnettoeinkommen dominiert bei deinen Wunschkunden?</div>
+            <div class="options-flex">
+                <button class="option-btn selected" data-axis="y" data-idx="1" data-weight="15">Geringeres Einkommen (unter 2.000€)</button>
+                <button class="option-btn" data-axis="y" data-idx="1" data-weight="50">Solide Mittelschicht (2.000€ - 4.500€)</button>
+                <button class="option-btn" data-axis="y" data-idx="1" data-weight="85">Gehobene Einkommen (über 4.500€)</button>
+            </div>
+        </div>
+
+        <!-- Frage 3 -->
+        <div class="question-section axis-y">
+            <div class="question-title">Frage 3: Welcher Kaufgrund ist ausschlaggebend?</div>
+            <div class="options-flex">
+                <button class="option-btn selected" data-axis="y" data-idx="2" data-weight="20">Ersparnis und akute Schnäppchenjagd</button>
+                <button class="option-btn" data-axis="y" data-idx="2" data-weight="55">Gutes Preis-Leistungs-Verhältnis</button>
+                <button class="option-btn" data-axis="y" data-idx="2" data-weight="80">Statussymbol oder Exklusivität</button>
+            </div>
+        </div>
+
+        <!-- Frage 4 -->
+        <div class="question-section axis-x">
+            <div class="question-title">Frage 4: Wie reagiert dein typischer Kunde auf neue Trends?</div>
+            <div class="options-flex">
+                <button class="option-btn selected" data-axis="x" data-idx="0" data-weight="10">Wartet ab, bis ein Produkt etabliert ist</button>
+                <button class="option-btn" data-axis="x" data-idx="0" data-weight="45">Kauft, wenn es im Einzelhandel sichtbar wird</button>
+                <button class="option-btn" data-axis="x" data-idx="0" data-weight="90">Will es sofort haben (Social Media Hype)</button>
+            </div>
+        </div>
+
+        <!-- Frage 5 -->
+        <div class="question-section axis-x">
+            <div class="question-title">Frage 5: Wie neuartig ist die Produktkategorie?</div>
+            <div class="options-flex">
+                <button class="option-btn selected" data-axis="x" data-idx="1" data-weight="15">Jeder kennt es (z.B. neue Limonade)</button>
+                <button class="option-btn" data-axis="x" data-idx="1" data-weight="50">Optimierung bekannter Abläufe</button>
+                <button class="option-btn" data-axis="x" data-idx="1" data-weight="85">Echte disruptive Weltneuheit</button>
+            </div>
+        </div>
+
+        <!-- Frage 6 -->
+        <div class="question-section axis-x">
+            <div class="question-title">Frage 6: Wie loyal wechselt deine Zielgruppe ihre Marken?</div>
+            <div class="options-flex">
+                <button class="option-btn selected" data-axis="x" data-idx="2" data-weight="15">Extrem loyal (Kauft immer dasselbe)</button>
+                <button class="option-btn" data-axis="x" data-idx="2" data-weight="50">Wechselt bei klaren Vorteilen</button>
+                <button class="option-btn" data-axis="x" data-idx="2" data-weight="80">Keine Loyalität (Immer auf der Suche)</button>
+            </div>
+        </div>
+
+        <!-- Frage 7 (Demografie) -->
+        <div class="question-section" style="border-left-color: #9b59b6;">
+            <div class="question-title">Frage 7: Welche Alterskohorte (Generation) bildet den Kern deiner Zielgruppe?</div>
+            <div class="options-flex">
+                <button class="option-btn selected" data-axis="age" data-idx="0" data-weight="11" data-trendbonus="25">
+                    Generation Z & Alpha (Unter 30 Jahre) – Stark Trend-getrieben / Geringeres Einstiegs-Budget
+                </button>
+                <button class="option-btn" data-axis="age" data-idx="0" data-weight="45" data-trendbonus="5">
+                    Generation Y & Millennials (30 - 45 Jahre) – Konsumfreudig / Mittleres bis hohes Einkommen
+                </button>
+                <button class="option-btn" data-axis="age" data-idx="0" data-weight="44" data-trendbonus="-15">
+                    Boomer & Generation X (Über 45 Jahre) – Extrem Markenloyal / Maximale Kaufkraft
+                </button>
+            </div>
+        </div>
+
+        <!-- Frage 8 (Business-Modell) -->
+        <div class="question-section" style="border-left-color: #1abc9c;">
+            <div class="question-title">Frage 8: Welches Geschäftsmodell nutzt dein Unternehmen?</div>
+            <div class="options-flex">
+                <button class="option-btn selected" data-axis="model" data-idx="0" data-weight="41000000" data-type="b2c">
+                    B2C (Business-to-Consumer) – Mein Produkt richtet sich an Endkonsumenten / Privathaushalte
+                </button>
+                <button class="option-btn" data-axis="model" data-idx="0" data-weight="34000000" data-type="b2b">
+                    B2B (Business-to-Business) – Mein Produkt richtet sich an Firmen, Selbstständige oder Betriebe
+                </button>
+            </div>
+        </div>
+	<!-- FRAGE 9 (Geografie) -->
+<div class="question-section" style="border-left-color: #34495e;"> <!-- Edles Schiefergrau für Geografie -->
+    <div class="question-title">Frage 9: Welcher geografische Raum wird primär fokussiert?</div>
+    <div class="options-flex">
+        <button class="option-btn selected" data-axis="urban" data-idx="0" data-weight="100" data-trendbonus="15">
+            Metropolen & Großstädte (Urbane Zentren) – Maximale Trend-Offenheit / Hohe Dichte
+        </button>
+        <button class="option-btn" data-axis="urban" data-idx="0" data-weight="100" data-trendbonus="0">
+            Hybrid-Fokus (Gesamtdeutschland) – Ausgeglichene Verteilung über Stadt und Land
+        </button>
+        <button class="option-btn" data-axis="urban" data-idx="0" data-weight="75" data-trendbonus="-15">
+            Ländlicher Raum & Kleinstädte – Hohe Beständigkeit / Konservatives Kaufverhalten
+        </button>
+    </div>
+</div>
+
+    </div> 
+
+    <!-- RECHTE SPALTE: LIVE-AUSWERTUNG & MATRIX -->
+    <div class="panel visual-column">
+        <h2>2. Live-Auswertung</h2>
+        
+        <div class="matrix-wrapper">
+            <div class="matrix-title-y">Einkommensniveau: Gering &larr; Hoch</div>
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <div class="matrix-grid" id="matrix">
+                    <div class="quad-label ql-tl">Etablierte Qualität</div>
+                    <div class="quad-label ql-tr">Premium-Innovatoren</div>
+                    <div class="quad-label ql-bl">Gewohnheitskäufer</div>
+                    <div class="quad-label ql-br">Trend-Schnäppchen</div>
+                    <div class="target-dot" id="targetDot"></div>
+                </div>
+                <div class="matrix-title-x">Mentalität: Konservativ &rarr; Neugierig</div>
+            </div>
+        </div>
+
+        <div class="result-card">
+            <h3>📊 Potenzial auf dem deutschen Markt</h3>
+            <div class="stat-highlight" id="marketPotential">Berechne...</div>
+            <p style="font-size: 11px; color:#777;">*Basis: Strukturdaten des Statistischen Bundesamtes (Destatis-Modellierung).</p>
+        </div>
+
+        <div class="result-card" style="background: rgba(46, 204, 113, 0.05); border-left-color: #2ecc71;">
+            <h3>🦁 Deine Antwort für die Löwen</h3>
+            <div class="pitch-box" id="pitchOutput">Wähle Optionen aus...</div>
+        </div>
+    </div> 
+<!-- ERWEITERUNG: EXPORT-MODUL -->
+<div style="margin-top: 25px; text-align: center;">
+    <button class="option-btn" id="exportBtn" style="background: linear-gradient(135deg, #ffe082, var(--primary)); color: #000; font-weight: 700; text-align: center; width: 100%; border: none; box-shadow: 0 4px 15px var(--primary-glow);">
+        📥 Pitch-Report als PDF speichern / Drucken
+    </button>
+</div>
+    <!-- INTERACTCLUB BRANDING FOOTER -->
+    <footer>
+        &copy; 2026 &bull; <strong>InteractClub</strong> Digital Solutions &bull; Alle Rechte vorbehalten. Ein Tool zur strategischen Pitch-Vorbereitung.
+    </footer>
+
+</div> <!-- HIER schließt der Haupt-Container endgültig ab -->
+
+<!-- MODUL 3: JAVASCRIPT LOGIK-PIPELINE -->
+
+<!-- MODUL 3: FINALE JAVASCRIPT LOGIK-PIPELINE MIT FRAGE 9 -->
+<script>
+(function() {
+    // Pipeline-State Variablen für Fragen 1 bis 6
+    let q1_preis = 10;
+    let q2_einkommen = 15;
+    let q3_kaufgrund = 20;
+
+    let q4_trends = 10;
+    let q5_neuheit = 15;
+    let q6_loyalitaet = 20;
+
+    // Frage 7 (Demografie)
+    let q7_alter_anteil = 11; 
+    let q7_alter_trendbonus = 25; 
+
+    // Frage 8 (Business-Modell)
+    let q8_basis_markt = 41000000; 
+    let q8_typ = "b2c";
+
+    // INITIALISIERUNG FÜR DIE FINALE FRAGE 9 (Urbanisierung)
+    let q9_geo_faktor = 100; // Prozentualer Skalierungsfaktor für das Marktpotenzial
+    let q9_geo_trendbonus = 15; // Urbane Zentren starten mit +15 auf der Trend-Achse
+
+    const targetDot = document.getElementById("targetDot");
+    const marketPotential = document.getElementById("marketPotential");
+    const pitchOutput = document.getElementById("pitchOutput");
+    const buttons = document.querySelectorAll(".option-btn");
+
+    console.log("InteractClub Complete-Pipeline initialisiert. Buttons aktiv:", buttons.length);
+
+    function executePipeline() {
+        // 1. Mathematische Achsen-Durchschnitte berechnen (Inklusive beider Boni aus Demografie & Geografie)
+        let avgY = (q1_preis + q2_einkommen + q3_kaufgrund) / 3;
+        let avgX = ((q4_trends + q5_neuheit + q6_loyalitaet) / 3) + q7_alter_trendbonus + q9_geo_trendbonus;
+        
+        // Stabile Leitplanken absichern (Werte zwingend zwischen 0% und 100% halten)
+        if (avgX > 100) avgX = 100; if (avgX < 0) avgX = 0;
+        if (avgY > 100) avgY = 100; if (avgY < 0) avgY = 0;
+
+        // 2. Goldene Bubble transformieren
+        if (targetDot) {
+            targetDot.style.left = avgX + "%";
+            targetDot.style.top = (100 - avgY) + "%";
+        }
+
+        // 3. Destatis-Faktoren-Gewichtung (Einkommens- und Innovationsstrukturen)
+        let incomeFactor = avgY > 70 ? 0.15 : (avgY > 45 ? 0.50 : 0.35);
+        let adoptionFactor = avgX > 70 ? 0.12 : (avgX > 40 ? 0.60 : 0.28);
+        
+        // Mathematische Multiplikation über alle 3 statistischen Dimensionen (Modell * Alter * Geografie)
+        let calculatedPotential = Math.round(
+            q8_basis_markt * incomeFactor * adoptionFactor * (q7_alter_anteil / 100) * (q9_geo_faktor / 100)
+        );
+        
+        if (marketPotential) {
+            let einheit = q8_typ === "b2b" ? " Unternehmen / Betriebe" : " Haushalte / Käufer";
+            marketPotential.innerText = "~ " + calculatedPotential.toLocaleString('de-DE') + einheit;
+        }
+
+        // 4. Dynamische Pitch-Skript-Generierung
+        let speech = "";
+        let nische = q8_typ === "b2b" ? "Geschäftskunden und Unternehmen" : "Konsumenten und Early Adopter";
+
+        if (avgX >= 50 && avgY >= 50) {
+            speech = `"Wir fokussieren uns im ` + q8_typ.toUpperCase() + `-Bereich gezielt auf die Top-Entscheider und Premium-Innovatoren. Diese kaufkräftigen ` + nische + ` finanzieren unser Wachstum von Tag eins an über herausragende Deckungsbeiträge und hohe Margen!"`;
+        } else if (avgX < 50 && avgY >= 50) {
+            speech = `"Unsere Zielgruppe sind etablierte Qualitätskäufer im ` + q8_typ.toUpperCase() + `-Markt. Sie verfügen über hohe Budgets, wechseln Anbieter jedoch nur ungern. Nach der Gewinnung sichern sie uns einen extrem stabilen Customer Lifetime Value."`;
+        } else if (avgX >= 50 && avgY < 50) {
+            speech = `"Wir besetzen das dynamische Segment der Trend-Käufer. Wir skalieren hier im ` + q8_typ.toUpperCase() + `-Sektor massiv über virales digitales Marketing, schnelle Entscheidungswege und smarte Abo-Modelle!"`;
+        } else {
+            speech = `"Wir greifen den massiven Volumenmarkt der kostenbewussten Gewohnheitskäufer an. Über verlässliche Prozesse und extreme Preiseffizienz binden wir die breite Masse krisensicher."`;
+        }
+        
+        if (pitchOutput) { pitchOutput.innerText = speech; }
+    }
+
+    function handleSelection(event) {
+        const btn = event.currentTarget;
+        const axis = btn.getAttribute("data-axis");
+        const idx = parseInt(btn.getAttribute("data-idx"), 10);
+        const weight = parseInt(btn.getAttribute("data-weight"), 10);
+
+        // UI-Klassen umschalten
+        const groupSelector = '.option-btn[data-axis="' + axis + '"][data-idx="' + idx + '"]';
+        const siblings = document.querySelectorAll(groupSelector);
+        siblings.forEach(function(s) { s.classList.remove("selected"); });
+        btn.classList.add("selected");
+
+        // Zustand basierend auf Achsen-Zuweisung mutieren
+        if (axis === "y") {
+            if (idx === 0) q1_preis = weight;
+            if (idx === 1) q2_einkommen = weight;
+            if (idx === 2) q3_kaufgrund = weight;
+        }
+        if (axis === "x") {
+            if (idx === 0) q4_trends = weight;
+            if (idx === 1) q5_neuheit = weight;
+            if (idx === 2) q6_loyalitaet = weight;
+        }
+        if (axis === "age") {
+            q7_alter_anteil = weight;
+            q7_alter_trendbonus = parseInt(btn.getAttribute("data-trendbonus"), 10);
+        }
+        if (axis === "model") {
+            q8_basis_markt = weight;
+            q8_typ = btn.getAttribute("data-type");
+        }
+        // NEUER EVENT-CASE FÜR FRAGE 9
+        if (axis === "urban") {
+            q9_geo_faktor = weight;
+            q9_geo_trendbonus = parseInt(btn.getAttribute("data-trendbonus"), 10);
+        }
+
+        executePipeline();
+    }
+
+    // Event-Listener sicher im DOM verankern
+    if (buttons.length > 0) {
+        buttons.forEach(function(button) {
+            button.addEventListener("click", handleSelection);
+        });
+    }
+
+    // Erstmaliger Pipeline-Start beim Laden
+    executePipeline();
+})();
+</script>
+
+</body>
+</html>
